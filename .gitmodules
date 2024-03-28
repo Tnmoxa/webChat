@@ -1,0 +1,3 @@
+[submodule "chatAPI"]
+	path = chatAPI
+	url = git@github.com:Tnmoxa/chat.git
