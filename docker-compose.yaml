@@ -1,0 +1,25 @@
+networks:
+  chat_network:
+    external: true
+
+services:
+  chat:
+    build:
+      context: ./chatAPI
+      dockerfile: ../docker/backend/chat/Dockerfile
+    container_name: chat
+    networks:
+      - chat_network
+    ports:
+      - "8000:8000"
+
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile
+    container_name: chat-frontend
+    networks:
+      - chat_network
+    ports:
+      - "3000:3000"
