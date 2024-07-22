@@ -1,6 +1,6 @@
 #!make
-PYTHON_EXEC ?= python3.11
-VENV ?= "./.venv"
+PYTHON_EXEC ?= python3.12
+VENV ?= "./.venv12"
 SHELL := /bin/bash
 NODE_VERSION ?= 20.11.1
 NPM_VERSION ?= 10.5.0
