@@ -20,16 +20,22 @@ export default function Page(): JSX.Element {
     });
 
 
-
+    console.log({
+      address: "0x" + res["address"],
+      display_name: data.display_name,
+      signature: res['signature'],
+    })
     axios
       .post("http://localhost:8000/account/create", {
-        address: "0x" + res["pubKey"],
+        address: "0x" + res["address"],
         display_name: data.display_name,
         signature: res['signature'],
       })
       .then(() => {
-        window.localStorage.setItem("Chat_secret_key", res["encryptedHex"]);
+        window.localStorage.setItem("Chat_secret_key", res["encryptedSecKey"]);
         window.sessionStorage.setItem("Chat_secret_key", res["secKey"]);
+        window.localStorage.setItem("User", data.display_name);
+        window.localStorage.setItem("Address", res["address"]);
         router.push("/");
       })
       .catch(function (error: any) {

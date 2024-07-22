@@ -28,7 +28,7 @@ type EncriptData = {
 export function encrypt(data: EncriptData) {
   const seed = bip39.mnemonicToSeedSync(data.mnemonic).toString("hex");
   const hdkey = HDKey.fromMasterSeed(seed);
-  const pubKey = Buffer.from(hdkey.publicKeyRaw).toString("hex");
+  const address = Buffer.from(hdkey.publicKeyRaw).toString("hex");
   const secKey = Buffer.from(hdkey.privateKey).toString("hex");
   const hash = sha256.create();
   hash.update(data.password);
@@ -36,14 +36,19 @@ export function encrypt(data: EncriptData) {
   const textBytes = aesjs.utils.hex.toBytes(secKey);
   const aesCtr = new aesjs.ModeOfOperation.ctr(keyArray, 1);
   const encryptedBytes = aesCtr.encrypt(textBytes);
-  const encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
+  const encryptedSecKey = aesjs.utils.hex.fromBytes(encryptedBytes);
   const msg = new TextEncoder().encode(data.display_name);
   const signature = Buffer.from(ed25519.sign(msg, secKey)).toString("base64");
   return {
-    pubKey: pubKey,
-    encryptedHex: encryptedHex,
+    address: address,
+    encryptedSecKey: encryptedSecKey,
     secKey: secKey,
     msg: msg,
     signature: signature,
   };
+}
+
+export function getSignature(display_name: string, secKey: string ) {
+  const msg = new TextEncoder().encode(display_name);
+  return Buffer.from(ed25519.sign(msg, secKey)).toString("base64");
 }
