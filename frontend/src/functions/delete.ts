@@ -44,9 +44,6 @@ export function delete_message(message: Message) {
       .delete("http://localhost:8000/message/delete", {
         params: {
           message_id: message.message_id,
-          from_address: "0x" + message.from_address,
-          message: message.message,
-          signature: message.signature,
         },
       })
       .then(() => {
